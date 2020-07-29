@@ -3,9 +3,12 @@ package com.company;
 import javafx.scene.control.MenuButton;
 
 import javax.swing.*;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class OperacionesMenu {
 
@@ -106,4 +109,46 @@ public class OperacionesMenu {
        }
        Menu.MenuEmpleado();
     }
+
+    public static void EmpleadoMayorSalario(){
+
+        System.out.println(ListEmpleado.stream().max(Comparator.comparing(Empleado::getSalario)).map(Empleado::toString).orElse("NO Hay registro de ningún Empleado"));Menu.MenuEmpleado();
+
+    }
+
+    public static void EmpleadoMenorSalario(){
+
+        System.out.println(ListEmpleado.stream().min(Comparator.comparing(Empleado::getSalario)).map(Empleado::toString).orElse("NO Hay registro de ningún Empleado"));Menu.MenuEmpleado();
+
+    }
+
+    public static void OrdenarporNombre(){
+
+       ListEmpleado.stream().sorted(Comparator.comparing(Empleado::getNombre)).forEach(System.out::println);Menu.MenuEmpleado();
+    }
+
+    public static void SumaSalarioTotal(){
+
+        System.out.println(ListEmpleado.stream().filter(empleado -> empleado.getSalario()>700000).map(Empleado::getSalario).reduce(0,(acc,sueldo)->acc +sueldo));
+    }
+
+    public static Stream<Empleado> FiltroApellidos(){
+
+       return ListEmpleado.stream().filter(empleado -> empleado.getApellido().toUpperCase().startsWith("A"));
+
+    }
+
+    public static void NumeroApellidosconA(){
+
+    System.out.println(FiltroApellidos().count());
+
+    }
+
+    public static void PrimeroscincoMayorSalario(){
+
+        System.out.println(ListEmpleado.stream().sorted(Comparator.comparing(Empleado:: getSalario, Comparator.reverseOrder())).limit(5).collect(Collectors.toList()));
+
+    }
+
 }
+
